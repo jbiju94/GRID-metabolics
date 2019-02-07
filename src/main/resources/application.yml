@@ -1,0 +1,22 @@
+security:
+  oauth2:
+    client:
+      clientId: 22DBSX
+      clientSecret: 49ff5e2edb36b632cbd8b3b83bd0e570
+      accessTokenUri: https://api.fitbit.com/oauth2/token
+      userAuthorizationUri: https://www.fitbit.com/oauth2/authorize
+      tokenName: oauth_token
+      authenticationScheme: header
+      clientAuthenticationScheme: header
+      scope: "activity heartrate location nutrition profile settings sleep social weight"
+    resource:
+      userInfoUri: https://api.fitbit.com/1/user/-/profile.json
+fitbit:
+  api:
+    resource:
+      activitiesUri: https://api.fitbit.com/1/user/-/activities.json
+      baseURL: https://api.fitbit.com/1/user/-/activities/heart/date/[date]/[period].json
+
+logging:
+  level:
+    org.springframework.security: TRACE
