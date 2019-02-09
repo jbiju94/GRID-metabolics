@@ -15,7 +15,7 @@ fitbit:
   api:
     resource:
       activitiesUri: https://api.fitbit.com/1/user/-/activities.json
-      baseURL: https://api.fitbit.com/1/user/-/activities/heart/date/[date]/[period].json
+      heartRateTimeSeriesUri: https://api.fitbit.com/1/user/-/activities/heart/date/today/1m.json
 
 logging:
   level:

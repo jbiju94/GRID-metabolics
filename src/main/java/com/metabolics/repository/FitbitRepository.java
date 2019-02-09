@@ -1,15 +1,13 @@
 package com.metabolics.repository;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.metabolics.model.fitbit.Activity;
 import com.metabolics.model.fitbit.LifetimeActivity;
+import com.metabolics.model.fitbit.heartrate.HeartRate;
 
 @Component
 public class FitbitRepository {
@@ -19,6 +17,26 @@ public class FitbitRepository {
 
 	@Value("${fitbit.api.resource.activitiesUri}")
 	String fitbitActivitiesUri;
+	@Value("${fitbit.api.resource.heartRateTimeSeriesUri}")
+	String heartRateTimeSeriesUri;
+
+	public HeartRate getHeartRate() {
+		/*
+		 * ResponseEntity<Object[]> responseEntity =
+		 * oAuthRestTemplate.getForEntity(fitbitActivitiesUri, Object[].class); return
+		 * responseEntity.getBody();
+		 */
+		HeartRate hrate;
+		try {
+			hrate = oAuthRestTemplate.getForObject(heartRateTimeSeriesUri, HeartRate.class);
+			return hrate;
+		} catch (Exception e) {
+			System.out.print("Error");
+		}
+
+		return null;
+
+	}
 
 	public LifetimeActivity getLifetimeActivity() {
 		LifetimeActivity lifetimeActivity;
@@ -31,10 +49,5 @@ public class FitbitRepository {
 		}
 
 		return lifetimeActivity;
-	}
-
-	@RequestMapping("/user")
-	public Principal getUser(Principal principal) {
-		return principal;
 	}
 }
