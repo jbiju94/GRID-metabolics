@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.metabolics.model.fitbit.LifetimeActivity;
 import com.metabolics.model.fitbit.heartrate.HeartRate;
 import com.metabolics.repository.FitbitRepository;
+import com.metabolics.service.HeartRateService;
 
 @RestController
 public class FitbitIntegration {
 
 	@Autowired
 	FitbitRepository fitbitRepository;
+	
+	@Autowired
+	HeartRateService heartRateService;
 
 	@RequestMapping(value = "/lifetime-activity", method = RequestMethod.GET)
 	public LifetimeActivity lifetimeActivity() {
@@ -26,7 +30,7 @@ public class FitbitIntegration {
 	@RequestMapping(value = "/heart-rate", method = RequestMethod.GET)
 	public HeartRate heartRate() {
 
-		return fitbitRepository.getHeartRate();
+		return heartRateService.getHeartRateAverage();
 	}
 
 	@RequestMapping("/user")
