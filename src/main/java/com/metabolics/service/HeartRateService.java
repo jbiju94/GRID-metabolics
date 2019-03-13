@@ -1,15 +1,15 @@
 package com.metabolics.service;
 
+import java.util.ArrayList;
+import java.util.IntSummaryStatistics;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.DoubleSummaryStatistics;
 import java.util.Map;
-import java.util.function.Predicate;
 
+import com.metabolics.model.response.HeartRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.metabolics.model.fitbit.heartrate.HeartRate;
 import com.metabolics.model.fitbit.heartrate.HeartRateActivity;
 import com.metabolics.repository.FitbitRepository;
 
@@ -19,17 +19,33 @@ public class HeartRateService {
 	@Autowired
 	private FitbitRepository fitbitRepository;
 
-	public HeartRate getHeartRateAverage() {
+	public List<HeartRate> getHeartRateDetails() {
 
-		HeartRate heartRate = fitbitRepository.getHeartRate();
+		List<HeartRate> heartRateResponseList = new ArrayList<>();
 
-		Stream<HeartRateActivity> heartRateActivityStream = heartRate.getActivitiesHeart().stream();
+		//Reduce Data Size - Group-by Month & Aggregate Data.
+		Map<Object, IntSummaryStatistics> results = fitbitRepository.getHeartRate().getActivitiesHeart().stream()
+				.filter(hr-> hr.getValue().getRestingHeartRate() != 0)
+				.collect(Collectors.groupingBy(HeartRateActivity::getMonth, Collectors.summarizingInt(hr -> hr.getValue().getRestingHeartRate())));
 
-		Map<Object, Long> result = heartRateActivityStream
-				.collect(Collectors.groupingBy(hr1 -> hr1.getMonth(), Collectors.counting()));
+		results.forEach((month,summary) -> {
 
-		//heartRate.setActivitiesHeart(result);
-		return heartRate;
+			HeartRate hr= new HeartRate();
+			hr.setMonth(month.toString());
+			hr.setRestingHeartRate((int) summary.getAverage());
+			heartRateResponseList.add(hr);
+				});
+
+		/*return results.entrySet()
+				.stream()
+				.map(e -> computeHeartRatePerMonthStatistics(e.getKey().toString(),e.getValue()))
+				.collect(Collectors.toList());*/
+
+		return heartRateResponseList;
 	}
+
+	/*private static HeartRate computeHeartRatePerMonthStatistics(String month, IntSummaryStatistics statistics) {
+		return new HeartRate();// convert to HeartRateRoot given your inputs to method of conversion
+	}*/
 
 }

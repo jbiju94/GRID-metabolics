@@ -24,8 +24,8 @@ public class HeartRateActivity {
 		this.value = value;
 	}
 	
-	public int getMonth() {
-		return Integer.parseInt(dateTime.substring(5, 7));
+	public String getMonth() {
+		return dateTime.substring(0, 7);
 	}
 
 }

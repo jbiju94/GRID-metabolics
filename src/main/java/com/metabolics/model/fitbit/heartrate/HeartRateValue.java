@@ -7,17 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HeartRateValue  {
 
-	private List<HeartRateZone> customHeartRateZones;
 	private List<HeartRateZone> heartRateZones;
 	private int restingHeartRate = 0;
 
-	public List<HeartRateZone> getCustomHeartRateZones() {
-		return customHeartRateZones;
-	}
-
-	public void setCustomHeartRateZones(List<HeartRateZone> customHeartRateZones) {
-		this.customHeartRateZones = customHeartRateZones;
-	}
 
 	public List<HeartRateZone> getHeartRateZones() {
 		return heartRateZones;

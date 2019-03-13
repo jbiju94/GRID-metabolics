@@ -1,5 +1,6 @@
 package com.metabolics.repository;
 
+import com.metabolics.model.fitbit.heartrate.HeartRateRoot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.metabolics.model.fitbit.Activity;
 import com.metabolics.model.fitbit.LifetimeActivity;
-import com.metabolics.model.fitbit.heartrate.HeartRate;
 
 @Component
 public class FitbitRepository {
@@ -20,15 +20,15 @@ public class FitbitRepository {
 	@Value("${fitbit.api.resource.heartRateTimeSeriesUri}")
 	String heartRateTimeSeriesUri;
 
-	public HeartRate getHeartRate() {
+	public HeartRateRoot getHeartRate() {
 		/*
 		 * ResponseEntity<Object[]> responseEntity =
 		 * oAuthRestTemplate.getForEntity(fitbitActivitiesUri, Object[].class); return
 		 * responseEntity.getBody();
 		 */
-		HeartRate hrate;
+		HeartRateRoot hrate;
 		try {
-			hrate = oAuthRestTemplate.getForObject(heartRateTimeSeriesUri, HeartRate.class);
+			hrate = oAuthRestTemplate.getForObject(heartRateTimeSeriesUri, HeartRateRoot.class);
 			return hrate;
 		} catch (Exception e) {
 			System.out.print("Error");

@@ -1,14 +1,17 @@
 package com.metabolics.rest;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.metabolics.model.fitbit.LifetimeActivity;
-import com.metabolics.model.fitbit.heartrate.HeartRate;
+import com.metabolics.model.response.HeartRate;
 import com.metabolics.repository.FitbitRepository;
 import com.metabolics.service.HeartRateService;
 
@@ -27,10 +30,10 @@ public class FitbitIntegration {
 		return fitbitRepository.getLifetimeActivity();
 	}
 
-	@RequestMapping(value = "/heart-rate", method = RequestMethod.GET)
-	public HeartRate heartRate() {
+	@RequestMapping(value = "/heart-rate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody List<HeartRate> heartRate() {
 
-		return heartRateService.getHeartRateAverage();
+		return heartRateService.getHeartRateDetails();
 	}
 
 	@RequestMapping("/user")
