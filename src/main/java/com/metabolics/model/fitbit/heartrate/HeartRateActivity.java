@@ -24,7 +24,7 @@ public class HeartRateActivity {
 		this.value = value;
 	}
 	
-	public String getMonth() {
+	public String getYearMonth() {
 		return dateTime.substring(0, 7);
 	}
 
